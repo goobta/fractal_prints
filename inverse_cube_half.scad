@@ -1,9 +1,8 @@
+// Program by Ankur Gupta
+// www.github.com/agupta231
+// Jan 2017
+
 /**
-Program by Ankur Gupta
-www.github.com/agupta231
-Jan 2017
-
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -23,16 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 **/
 
-init_size = 40;
+init_size = 50;
 iteration_multiplier = 0.5;
-iterations = 5;
-hull_width = 5;
-strut_width = 3;
-enclosure_offset = 5;
+iterations = 4;
 
 echo(version());
+
+total_size = ((init_size * iteration_multiplier) * (1 - pow(iteration_multiplier, iterations))) / (1 - iteration_multiplier) * 2 + init_size;
+
 echo("Total Size: ---------");
-echo(((init_size * iteration_multiplier) * (1 - pow(iteration_multiplier, iterations))) / (1 - iteration_multiplier) * 2 + init_size);
+echo(total_size);
 echo("---------------------");
 
 module aux_cubes(current_iter, starting_pos) {
@@ -52,38 +51,14 @@ module aux_cubes(current_iter, starting_pos) {
     }
 }
 
-module struts(total_length) {
-    strut_length = total_length * sqrt(3) + hull_width / 2;
-    
-    for(i = [[35, 0, -45], [35, 0, 45], [-35, 0, 45], [-35, 0, -45]]) {
-        rotate(i) {
-            cube([strut_width, strut_length, strut_width], center = true);
-        }
-    }
-}
-
-module enclosure() {
-    total_length = ((init_size * iteration_multiplier) * (1 - pow(iteration_multiplier, iterations))) / (1 - iteration_multiplier) * 2 + init_size + enclosure_offset;
-    
+difference() {
     union() {
-        difference() {
-            cube(total_length + hull_width, center = true);
+        cube(init_size, center = true);
         
-            for(i = [[hull_width + 1, 0, 0], [0, hull_width + 1, 0], [0, 0, hull_width + 1], [-hull_width - 1, 0, 0], [0, -hull_width - 1, 0], [0, 0, -hull_width - 1]]) {
-                translate(i) {
-                    cube(total_length, center = true);
-                }
-            }
-        }
-        
-        struts(total_length);
+        aux_cubes(1, [0, 0, 0]);
     }
-}
 
-union() {
-    cube(init_size, center = true);
-    aux_cubes(1, [0, 0, 0]);
-    
-    enclosure();
-    
+    translate([0, 0, -total_size / 2]) {
+        cube(total_size, center = true);
+    }
 }
