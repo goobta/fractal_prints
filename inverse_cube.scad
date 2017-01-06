@@ -40,9 +40,7 @@ module aux_cubes(current_iter, starting_pos) {
         }
         
         if(current_iter < iterations) {
-            echo("in here");
-            
-            // aux_cubes(current_iter + 1, new_pos);
+            aux_cubes(current_iter + 1, new_pos);
         }
     }
 }
