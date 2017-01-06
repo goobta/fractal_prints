@@ -25,8 +25,13 @@ SOFTWARE.
 init_size = 50;
 iteration_multiplier = 0.5;
 iterations = 5;
+hull_width = 7;
+strut_width = 3;
 
 echo(version());
+echo("Total Size: ---------");
+echo(((init_size * iteration_multiplier) * (1 - pow(iteration_multiplier, iterations))) / (1 - iteration_multiplier) * 2 + init_size);
+echo("---------------------");
 
 module aux_cubes(current_iter, starting_pos) {
     iter_size = init_size * pow(iteration_multiplier, current_iter);
@@ -45,8 +50,38 @@ module aux_cubes(current_iter, starting_pos) {
     }
 }
 
-union() {
-    cube(init_size, center = true);
+module struts(total_length) {
+    strut_length = total_length * sqrt(3) + hull_width / 2;
     
-    aux_cubes(1, [0, 0, 0]);
+    for(i = [[35, 0, -45], [35, 0, 45], [-35, 0, 45], [-35, 0, -45]]) {
+        rotate(i) {
+            cube([strut_width, strut_length, strut_width], center = true);
+        }
+    }
+}
+
+module enclosure() {
+    total_length = ((init_size * iteration_multiplier) * (1 - pow(iteration_multiplier, iterations))) / (1 - iteration_multiplier) * 2 + init_size;
+    
+    union() {
+        difference() {
+            cube(total_length + hull_width, center = true);
+        
+            for(i = [[hull_width + 1, 0, 0], [0, hull_width + 1, 0], [0, 0, hull_width + 1], [-hull_width - 1, 0, 0], [0, -hull_width - 1, 0], [0, 0, -hull_width - 1]]) {
+                translate(i) {
+                    cube(total_length, center = true);
+                }
+            }
+        }
+        
+        struts(total_length);
+    }
+}
+
+union() {
+    //cube(init_size, center = true);
+    //saux_cubes(1, [0, 0, 0]);
+    
+    enclosure();
+    
 }
