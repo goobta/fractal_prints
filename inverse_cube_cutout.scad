@@ -23,8 +23,8 @@ SOFTWARE.
 **/
 
 init_size = 50;
-iteration_multiplier = 0.5;
-iterations = 5;
+iteration_multiplier = 0.75;
+iterations = 3;
 
 echo(version());
 
@@ -45,8 +45,14 @@ module aux_cubes(current_iter, starting_pos) {
     }
 }
 
-union() {
-    cube(init_size, center = true);
-    
-    aux_cubes(1, [0, 0, 0]);
+total_length = ((init_size * iteration_multiplier) * (1 - pow(iteration_multiplier, iterations - 1))) / (1 - iteration_multiplier) * 2 + init_size - 5;
+
+difference() {
+    cube(total_length, center = true);
+
+    union() {
+        cube(init_size, center = true);
+        
+        aux_cubes(1, [0, 0, 0]);
+    }
 }
