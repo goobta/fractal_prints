@@ -79,8 +79,8 @@ module enclosure() {
 }
 
 union() {
-    //cube(init_size, center = true);
-    //saux_cubes(1, [0, 0, 0]);
+    cube(init_size, center = true);
+    aux_cubes(1, [0, 0, 0]);
     
     enclosure();
     
