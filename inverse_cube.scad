@@ -24,7 +24,7 @@ SOFTWARE.
 
 init_size = 50;
 iteration_multiplier = 0.5;
-iterations = 4;
+iterations = 5;
 
 echo(version());
 
