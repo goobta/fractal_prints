@@ -27,38 +27,68 @@ init_square_size = 40;
 connector_length = 30;
 connector_thickness = 0.1;
 iteration_multiplier = 0.5;
-iterations = 1;
+iterations = 2;
 
 echo(version());
 
 translation_vectors = [[1, 1], [-1, -1], [-1, 1], [1, -1]];
-rotation_vectors [[1, 1, -1], [1, 1, -1], [1, 1, 1], [1, 1, 1]];
+rotation_vectors = [[1, 1, -1], [1, 1, -1], [1, 1, 1], [1, 1, 1]];
 
 module pattern(starting_pos, seed_corner, current_iteration) {
     translation = false;
+    translations = false;  
+    rotations = false;
     current_size = init_square_size * pow(iteration_multiplier, current_iteration - 1);
-    
+    current_connector_size = connector_length * pow(iteration_multiplier, current_iteration - 1);
+
     if(seed_corner == "center") {
         translation = [0,0];
+        $dank = 1;
         translations = translation_vectors;
         rotations = rotation_vectors;
     }
     else if(seed_corner == "bottom_left") {
         translation = [current_size / 2, current_size / 2];
-        translations = 
+        translations = [translation_vectors[0] , translation_vectors[2], translation_vectors[3]];
+        rotations = [rotation_vectors[0], rotation_vectors[2], rotation_vectors[3]];
     }
     else if(seed_corner == "bottom_right") {
         translation = [-current_size / 2, current_size / 2];
+        translations = [translation_vectors[0], translation_vectors[1], translation_vectors[2]];
+        rotations = [rotation_vectors[0], rotation_vectors[1], rotation_vectors[2]];
     }
     else if(seed_corner == "top_left") {
         translation = [current_size / 2, -current_size / 2];
+        translations = [translation_vectors[0], translation_vectors[1], translation_vectors[3]];
+        rotations = [rotation_vectors[0], rotation_vectors[1], rotation_vectors[3]];
     }
     else if(seed_corner == "top_right") {
         translation = [-current_size / 2, -current_size / 2];
+        translations = [translation_vectors[1], translation_vectors[2], translation_vectors[3]];
+        rotations = [rotation_vectors[1], rotation_vectors[2], rotation_vectors[3]];
     }
 
     translate(translation) {
-        //square(current_size, center = true);
+        square(current_size, center = true);
+    }
+
+    if(current_iteration < iterations) {
+        for(i = [0, len(translations) - 1]) {
+            translate(translations[i] * [current_connector_size / (2 * sqrt(2)), current_connector_size / (2 * sqrt(2))]) {
+                rotate(rotations[i] * [0, 45, 45]) {
+                    square([connector_thickness, current_connector_size], center = true);
+                }
+            }
+
+            if(translations[i] == [1, 1]) {
+            }
+            else if(translations[i] == [-1, -1]) {
+            }
+            else if(translations[i] == [-1, 1]) {
+            }
+            else if(translations[i] == [1, -1]) {
+            }
+        }
     }
 }
 
