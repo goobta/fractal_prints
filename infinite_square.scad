@@ -39,18 +39,19 @@ function ev_mult(vec1, vec2) =
 
 module translated_cube(translation_vector, starting_pos, size) {
     translate(translation_vector + starting_pos) {
-        square(size, center = true);
+      square(size, center = true);
     }
 }
 
-module connector(vector_keys, size, starting_pos, current_iteration) {
+module connector(vector_keys, connector_size, square_size, starting_pos, current_iteration) {
     if(current_iteration < iterations) {
         for(i = vector_keys) {
-            echo(ev_mult(translation_vectors[i], [size / (2 * sqrt(2)), size / (2 * sqrt(2))]));
+            corner = ev_mult(translation_vectors[i], [square_size / 2, square_size / 2]) + starting_pos;
+            connector_correction = ev_mult(translation_vectors[i], [connector_size / (2 * sqrt(2)), connector_size / (2 * sqrt(2))]);
 
-            translate(translation_vectors[i] * [size / (2 * sqrt(2)), size / (2 * sqrt(2))] + starting_pos) {
-                rotate(rotation_vectors[i] * [0, 45, 45]) {
-                    #square([connector_thickness, size], center = true);
+            translate(corner + connector_correction) {
+                rotate(ev_mult(rotation_vectors[i], [0, 45, 45])) {
+                    #square([connector_thickness, connector_size], center = true);
                 }
             }
         }
@@ -66,23 +67,23 @@ module pattern(starting_pos, seed_corner, current_iteration) {
 
     if(seed_corner == "center") {
         translated_cube([0,0], starting_pos, current_size);
-        connector([0, 1, 2, 3], current_connector_size, starting_pos, current_iteration);
+        connector([0, 1, 2, 3] , current_connector_size, current_size, starting_pos, current_iteration);
     }
     else if(seed_corner == "bottom_left") {
         translated_cube([current_size / 2, current_size / 2], starting_pos, current_size);
-        connector([0, 2, 3], current_connector_size, starting_pos, current_iteration);
+        connector([0, 2, 3], current_connector_size, current_size, starting_pos, current_iteration);
     }
     else if(seed_corner == "bottom_right") {
         translated_cube([-current_size / 2, current_size / 2], starting_pos, current_size);
-        connector([0, 1, 2], current_connector_size, starting_pos, current_iteration);
+        connector([0, 1, 2], current_connector_size, current_size, starting_pos, current_iteration);
     }
     else if(seed_corner == "top_left") {
         translated_cube([current_size / 2, -current_size / 2], starting_pos, current_size);
-        connector([0, 1, 3], current_connector_size, starting_pos, current_iteration);
+        connector([0, 1, 3], current_connector_size, current_size, starting_pos, current_iteration);
     }
     else if(seed_corner == "top_right") {
         translated_cube([-current_size / 2, -current_size / 2], starting_pos, current_size);
-        connector([1, 2, 3], current_connector_size, starting_pos, current_iteration);
+        connector([1, 2, 3], current_connector_size, current_size, starting_pos, current_iteration);
     }
 }
 
