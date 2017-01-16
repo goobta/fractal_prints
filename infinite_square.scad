@@ -24,10 +24,10 @@ SOFTWARE.
 **/
 
 init_square_size = 40;
-connector_length = 30;
+connector_length = 20;
 connector_thickness = 0.1;
 iteration_multiplier = 0.5;
-iterations = 3;
+iterations = 8;
 
 echo(version());
 
@@ -80,24 +80,34 @@ module pattern(starting_pos, seed_corner, current_iteration) {
     current_connector_size = connector_length * pow(iteration_multiplier, current_iteration - 1);
 
     if(seed_corner == "center") {
-        translated_cube([0,0], starting_pos, current_size);
-        connector([0, 1, 2, 3], current_connector_size, current_size, starting_pos, current_iteration);
+        center_pos = [0,0] + starting_pos;
+        translate(center_pos) square(current_size, center=true);
+
+        connector([0, 1, 2, 3], current_connector_size, current_size, center_pos, current_iteration);
     }
     else if(seed_corner == "bottom_left") {
-        translated_cube([current_size / 2, current_size / 2], starting_pos, current_size);
-        connector([0, 2, 3], current_connector_size, current_size, starting_pos, current_iteration);
+        center_pos = [current_size / 2, current_size / 2] + starting_pos;
+        translate(center_pos) square(current_size, center=true);
+
+        connector([0, 2, 3], current_connector_size, current_size, center_pos, current_iteration);
     }
     else if(seed_corner == "bottom_right") {
-        translated_cube([-current_size / 2, current_size / 2], starting_pos, current_size);
-        connector([0, 1, 2], current_connector_size, current_size, starting_pos, current_iteration);
+        center_pos = [-current_size / 2, current_size / 2] + starting_pos;
+        translate(center_pos) square(current_size, center=true);
+
+        connector([0, 1, 2], current_connector_size, current_size, center_pos, current_iteration);
     }
     else if(seed_corner == "top_left") {
-        translated_cube([current_size / 2, -current_size / 2], starting_pos, current_size);
-        connector([0, 1, 3], current_connector_size, current_size, starting_pos, current_iteration);
+        center_pos = [current_size / 2, -current_size / 2] + starting_pos;
+        translate(center_pos) square(current_size, center=true);
+
+        connector([0, 1, 3], current_connector_size, current_size, center_pos, current_iteration);
     }
     else if(seed_corner == "top_right") {
-        translated_cube([-current_size / 2, -current_size / 2], starting_pos, current_size);
-        connector([1, 2, 3], current_connector_size, current_size, starting_pos, current_iteration);
+        center_pos = [-current_size / 2, -current_size / 2] + starting_pos;
+        translate(center_pos) square(current_size, center=true);
+
+        connector([1, 2, 3], current_connector_size, current_size, center_pos, current_iteration);
     }
 }
 
