@@ -27,7 +27,7 @@ init_square_size = 40;
 connector_length = 30;
 connector_thickness = 0.1;
 iteration_multiplier = 0.5;
-iterations = 2;
+iterations = 3;
 
 echo(version());
 
@@ -48,11 +48,25 @@ module connector(vector_keys, connector_size, square_size, starting_pos, current
         for(i = vector_keys) {
             corner = ev_mult(translation_vectors[i], [square_size / 2, square_size / 2]) + starting_pos;
             connector_correction = ev_mult(translation_vectors[i], [connector_size / (2 * sqrt(2)), connector_size / (2 * sqrt(2))]);
+            next_square_center = corner + ev_mult(translation_vectors[i], [connector_size / sqrt(2), connector_size / sqrt(2)]);
 
             translate(corner + connector_correction) {
                 rotate(ev_mult(rotation_vectors[i], [0, 45, 45])) {
                     #square([connector_thickness, connector_size], center = true);
                 }
+            }
+
+            if(i == 0) {
+                pattern(next_square_center, "bottom_left", current_iteration + 1);
+            }
+            else if(i == 1) {
+                pattern(next_square_center, "top_right", current_iteration + 1);
+            }
+            else if(i == 2) {
+                pattern(next_square_center, "bottom_right", current_iteration + 1);
+            }
+            else if(i == 3){
+                pattern(next_square_center, "top_left", current_iteration + 1);
             }
         }
     }
@@ -67,7 +81,7 @@ module pattern(starting_pos, seed_corner, current_iteration) {
 
     if(seed_corner == "center") {
         translated_cube([0,0], starting_pos, current_size);
-        connector([0, 1, 2, 3] , current_connector_size, current_size, starting_pos, current_iteration);
+        connector([0, 1, 2, 3], current_connector_size, current_size, starting_pos, current_iteration);
     }
     else if(seed_corner == "bottom_left") {
         translated_cube([current_size / 2, current_size / 2], starting_pos, current_size);
