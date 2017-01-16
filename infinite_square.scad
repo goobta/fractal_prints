@@ -35,11 +35,7 @@ translation_vectors = [[1, 1], [-1, -1], [-1, 1], [1, -1]];
 rotation_vectors = [[1, 1, -1], [1, 1, -1], [1, 1, 1], [1, 1, 1]];
 
 function ev_mult(vec1, vec2) =
-    if(len(vec1) != len(vec2)) {
-        echo("Vectors not the same dimensions");
-        break;
-    =
-}
+    len(vec1) != len(vec2) ? false : [for(i = [0:len(vec1) - 1]) vec1[i] * vec2[i]];
 
 module translated_cube(translation_vector, starting_pos, size) {
     translate(translation_vector + starting_pos) {
@@ -50,8 +46,8 @@ module translated_cube(translation_vector, starting_pos, size) {
 module connector(vector_keys, size, starting_pos, current_iteration) {
     if(current_iteration < iterations) {
         for(i = vector_keys) {
-            echo(translation_vectors[i] );
-            
+            echo(ev_mult(translation_vectors[i], [size / (2 * sqrt(2)), size / (2 * sqrt(2))]));
+
             translate(translation_vectors[i] * [size / (2 * sqrt(2)), size / (2 * sqrt(2))] + starting_pos) {
                 rotate(rotation_vectors[i] * [0, 45, 45]) {
                     #square([connector_thickness, size], center = true);
@@ -63,7 +59,7 @@ module connector(vector_keys, size, starting_pos, current_iteration) {
 
 module pattern(starting_pos, seed_corner, current_iteration) {
     translation = false;
-    translations = false;  
+    translations = false;
     rotations = false;
     current_size = init_square_size * pow(iteration_multiplier, current_iteration - 1);
     current_connector_size = connector_length * pow(iteration_multiplier, current_iteration - 1);
