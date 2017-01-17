@@ -24,10 +24,10 @@ SOFTWARE.
 **/
 
 init_square_size = 40;
-connector_length = 20;
+connector_length = 15;
 connector_thickness = 0.1;
 iteration_multiplier = 0.5;
-iterations = 8;
+iterations = 6;
 
 echo(version());
 
@@ -111,4 +111,6 @@ module pattern(starting_pos, seed_corner, current_iteration) {
     }
 }
 
-pattern([0, 0], "center", 1);
+union() {
+    pattern([0, 0], "center", 1);
+}
