@@ -27,7 +27,7 @@ init_square_size = 40;
 connector_length = 15;
 connector_thickness = 0.1;
 iteration_multiplier = 0.5;
-iterations = 6;
+iterations = 8;
 
 echo(version());
 
