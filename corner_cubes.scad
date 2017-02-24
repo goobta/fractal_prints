@@ -24,4 +24,41 @@ SOFTWARE.
 **/
 
 init_cube_size = 50;
-iteration_factor = 0.5;
+iteration_factor = 0.45;
+iterations = 3;
+
+echo("---- Gupta 2017 ----");
+echo(version());
+echo("--------------------");
+
+module iter_cube(current_iter, starting_pos) {
+  iter_size = init_cube_size * pow(iteration_factor, current_iter);
+  displacement = (init_cube_size * pow(iteration_factor, current_iter - 1)) / 2;
+
+  for(i = [
+    [-1, -1, -1],
+    [-1, -1, 1],
+    [-1, 1, 1],
+    [1, 1, 1],
+    [1, 1, -1],
+    [1, -1, -1],
+    [1, -1, 1],
+    [-1, 1, -1]]
+  ){
+    disp_vect = displacement * i;
+
+    translate(starting_pos + disp_vect) {
+      cube(iter_size, center = true);
+    }
+
+    if(current_iter < iterations) {
+      iter_cube(current_iter + 1, starting_pos + disp_vect);
+    }
+  }
+}
+
+union() {
+  cube(init_cube_size, center = true);
+
+  iter_cube(1, [0, 0, 0]);
+}
