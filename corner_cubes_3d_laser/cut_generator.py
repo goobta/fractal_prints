@@ -20,3 +20,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+# Set up parameters
+material_thickness = 0.8
+initial_cube_size = 10
+iteration_multiplier = 0.5
+iterations = 3
