@@ -26,3 +26,5 @@ material_thickness = 0.8
 initial_cube_size = 10
 iteration_multiplier = 0.5
 iterations = 3
+cutting_bed_width = 18
+cutting_bed_height = 10
