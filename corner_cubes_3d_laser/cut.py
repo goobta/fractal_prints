@@ -22,6 +22,8 @@
 # SOFTWARE.
 
 import math
+import svgwrite
+from svgwrite import inch
 
 
 class Cut:
@@ -44,36 +46,37 @@ class Cut:
 
         self.tab_width = self.length / self.tab_count
 
-    def generate_cut(self):
+    def generate_cut(self, drawing, starting_pos):
         if self.type == "a":
-            return self.__gen_cut_a()
+            return self.__gen_cut_a(drawing, starting_pos)
         elif self.type == "b":
-            return self.__gen_cut_b()
+            return self.__gen_cut_b(drawing, starting_pos)
         elif self.type == "c":
-            return self.__gen_cut_c()
+            return self.__gen_cut_c(drawing, starting_pos)
         elif self.type == "a90":
-            return self.__gen_cut_a90()
+            return self.__gen_cut_a90(drawing, starting_pos)
         elif self.type == "b90":
-            return self.__gen_cut_b90()
+            return self.__gen_cut_b90(drawing, starting_pos)
         elif self.type == "c90":
-            return self.__gen_cut_c90()
+            return self.__gen_cut_c90(drawing, starting_pos)
         else:
             return None
 
-    def __gen_cut_a(self):
+    def __gen_cut_a(self, drawing, starting_pos):
+
         pass
 
-    def __gen_cut_b(self):
+    def __gen_cut_b(self, drawing, starting_pos):
         pass
 
-    def __gen_cut_c(self):
+    def __gen_cut_c(self, drawing, starting_pos):
         pass
 
-    def __gen_cut_a90(self):
+    def __gen_cut_a90(self, drawing, starting_pos):
         pass
 
-    def __gen_cut_b90(self):
+    def __gen_cut_b90(self, drawing, starting_pos):
         pass
 
-    def __gen_cut_c90(self):
+    def __gen_cut_c90(self, drawing, starting_pos):
         pass

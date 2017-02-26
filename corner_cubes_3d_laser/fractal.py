@@ -21,21 +21,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Imports
 import svgwrite
 from svgwrite import inch
 from cut import Cut
 
 
 class Fractal:
-    def __init__(self):
-        self.material_thickness = 0.8
-        self.initial_cube_size = 10
-        self.iteration_multiplier = 0.5
-        self.iterations = 3
-        self.cutting_bed_width = 18
-        self.cutting_bed_height = 10
+    material_thickness = 0.8
+    initial_cube_size = 10
+    iteration_multiplier = 0.5
+    iterations = 3
+    cutting_bed_width = 18
+    cutting_bed_height = 10
 
-        self.bounding_box_color = "yellow"
-        self.cube_color = "black"
-        self.stroke = 0.5
+    bounding_box_color = "yellow"
+    cube_color = "black"
+    stroke = 0.5
+
+    def __init__(self):
+        pass
+
+    def generate_plans(self):
+        pass
