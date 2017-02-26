@@ -187,4 +187,6 @@ class Cut:
         pass
 
     def __gen_line(self, start_array, translation_array):
-        return self.drawing.line(tuple(start_array), tuple(start_array + translation_array), stroke=Config.cube_color, stroke_width=Config.stroke_thickness)
+        return self.drawing.line(tuple(start_array), tuple(start_array + translation_array),
+                                 stroke=Config.cube_color,
+                                 stroke_width=Config.stroke_thickness)
