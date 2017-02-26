@@ -22,16 +22,18 @@
 # SOFTWARE.
 
 import math
+import numpy
 import svgwrite
 from svgwrite import inch
+from config import Config
 
 
 class Cut:
-    def __init__(self, side_length, iteration, cut_type, material_thickness):
+    def __init__(self, side_length, iteration, cut_type, shapeID):
         self.length = side_length
         self.iteration = iteration
         self.type = cut_type
-        self.thickness = material_thickness
+        self.id = shapeID
 
         self.__generate_tabs()
 
@@ -39,7 +41,7 @@ class Cut:
         if math.floor(self.length) >= 3:
             self.tab_count = math.floor(self.length)
 
-            if not self.tab_count % 2:
+            if self.tab_count % 2 != 1:
                 self.tab_count -= 1
         else:
             self.tab_count = 3
@@ -47,36 +49,55 @@ class Cut:
         self.tab_width = self.length / self.tab_count
 
     def generate_cut(self, drawing, starting_pos):
+        self.drawing = drawing
+
         if self.type == "a":
-            return self.__gen_cut_a(drawing, starting_pos)
+            return self.__gen_cut_a(starting_pos)
         elif self.type == "b":
-            return self.__gen_cut_b(drawing, starting_pos)
+            return self.__gen_cut_b(starting_pos)
         elif self.type == "c":
-            return self.__gen_cut_c(drawing, starting_pos)
+            return self.__gen_cut_c(starting_pos)
         elif self.type == "a90":
-            return self.__gen_cut_a90(drawing, starting_pos)
+            return self.__gen_cut_a90(starting_pos)
         elif self.type == "b90":
-            return self.__gen_cut_b90(drawing, starting_pos)
+            return self.__gen_cut_b90(starting_pos)
         elif self.type == "c90":
-            return self.__gen_cut_c90(drawing, starting_pos)
+            return self.__gen_cut_c90(starting_pos)
         else:
             return None
 
-    def __gen_cut_a(self, drawing, starting_pos):
+    def __gen_cut_a(self, starting_pos):
+        shape = self.drawing.g(id=str(self.id))
 
+        last_pos = starting_pos + numpy.array([self.tab_width, Config.material_thickness])
+        for i in xrange(self.tab_count - 2):
+            if i % 2 == 0:
+                shape.add(self.__gen_line(last_pos, last_pos + numpy.array([0, -Config.material_thickness])))
+                last_pos += numpy.array([0, -Config.material_thickness])
+
+                shape.add(self.__gen_line(last_pos, last_pos + numpy.array([self.tab_width, 0])))
+                last_pos += numpy.array([self.tab_width, 0])
+
+                shape.add(self.__gen_line(last_pos, last_pos + numpy.array([0, -Config.material_thickness])))
+                last_pos += numpy.array([0, Config.material_thickness])
+            else:
+                shape.add(self.__gen_line(last_pos, last_pos + numpy.array([self.tab_width, 0])))
+                last_pos += numpy.array([self.tab_width, 0])
+
+    def __gen_cut_b(self, starting_pos):
         pass
 
-    def __gen_cut_b(self, drawing, starting_pos):
+    def __gen_cut_c(self, starting_pos):
         pass
 
-    def __gen_cut_c(self, drawing, starting_pos):
+    def __gen_cut_a90(self, starting_pos):
         pass
 
-    def __gen_cut_a90(self, drawing, starting_pos):
+    def __gen_cut_b90(self, starting_pos):
         pass
 
-    def __gen_cut_b90(self, drawing, starting_pos):
+    def __gen_cut_c90(self, starting_pos):
         pass
 
-    def __gen_cut_c90(self, drawing, starting_pos):
-        pass
+    def __gen_line(self, start_array, end_array):
+        return self.drawing.line(tuple(start_array), tuple(end_array), stroke=Config.cube_color, stroke_width=Config.stroke_thickness)
