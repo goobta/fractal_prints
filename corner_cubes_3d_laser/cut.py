@@ -69,20 +69,39 @@ class Cut:
     def __gen_cut_a(self, starting_pos):
         shape = self.drawing.g(id=str(self.id))
 
+        # Top Edge
         last_pos = starting_pos + numpy.array([self.tab_width, Config.material_thickness])
         for i in xrange(self.tab_count - 2):
             if i % 2 == 0:
-                shape.add(self.__gen_line(last_pos, last_pos + numpy.array([0, -Config.material_thickness])))
+                shape.add(self.__gen_line(last_pos, numpy.array([0, -Config.material_thickness])))
                 last_pos += numpy.array([0, -Config.material_thickness])
 
-                shape.add(self.__gen_line(last_pos, last_pos + numpy.array([self.tab_width, 0])))
+                shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width, 0])))
                 last_pos += numpy.array([self.tab_width, 0])
 
-                shape.add(self.__gen_line(last_pos, last_pos + numpy.array([0, -Config.material_thickness])))
+                shape.add(self.__gen_line(last_pos, numpy.array([0, -Config.material_thickness])))
                 last_pos += numpy.array([0, Config.material_thickness])
+
             else:
-                shape.add(self.__gen_line(last_pos, last_pos + numpy.array([self.tab_width, 0])))
+                shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width, 0])))
                 last_pos += numpy.array([self.tab_width, 0])
+
+        # Left Edge
+        last_pos = starting_pos + numpy.array([Config.material_thickness, self.tab_width])
+        for i in xrange(self.tab_count - 2):
+            if i % 2 == 0:
+                shape.add(self.__gen_line(last_pos, numpy.array([-Config.material_thickness, 0])))
+                last_pos += numpy.array([-Config.material_thickness, 0])
+
+                shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
+                last_pos += numpy.array([0, self.tab_width])
+
+                shape.add(self.__gen_line(last_pos, numpy.array([Config.material_thickness, 0])))
+                last_pos += numpy.array([Config.material_thickness, 0])
+
+            else:
+                shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
+                last_pos == numpy.array([0, self.tab_width])
 
     def __gen_cut_b(self, starting_pos):
         pass
@@ -99,5 +118,5 @@ class Cut:
     def __gen_cut_c90(self, starting_pos):
         pass
 
-    def __gen_line(self, start_array, end_array):
-        return self.drawing.line(tuple(start_array), tuple(end_array), stroke=Config.cube_color, stroke_width=Config.stroke_thickness)
+    def __gen_line(self, start_array, translation_array):
+        return self.drawing.line(tuple(start_array), tuple(start_array + translation_array), stroke=Config.cube_color, stroke_width=Config.stroke_thickness)
