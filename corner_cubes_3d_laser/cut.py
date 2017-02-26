@@ -120,7 +120,7 @@ class Cut:
                 shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width, 0])))
                 last_pos += numpy.array([self.tab_width, 0])
 
-        # Right Side
+        # Right Edge
         last_pos = starting_pos + numpy.array([self.length - Config.material_thickness, self.tab_width])
         for i in xrange(self.tab_count - 2):
             if i % 2 == 0:
@@ -136,6 +136,14 @@ class Cut:
             else:
                 shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
                 last_pos == numpy.array([0, self.tab_width])
+
+        # Top left corner
+        last_pos = starting_pos + numpy.array([Config.material_thickness, self.tab_width])
+
+        shape.add(self.__gen_line(last_pos, numpy.array([0, -(self.tab_width - Config.material_thickness)])))
+        last_pos += numpy.array([0, -(self.tab_width - Config.material_thickness)])
+
+        shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width - Config.material_thickness, 0])))
 
     def __gen_cut_b(self, starting_pos):
         pass
