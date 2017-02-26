@@ -169,6 +169,8 @@ class Cut:
 
         shape.add(self.__gen_line(last_pos, numpy.array([-(self.tab_width - Config.material_thickness), 0])))
 
+        return shape
+
     def __gen_cut_b(self, starting_pos):
         pass
 
