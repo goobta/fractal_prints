@@ -36,6 +36,9 @@ class Cut:
     def __generate_tabs(self):
         if math.floor(self.length) >= 3:
             self.tab_count = math.floor(self.length)
+
+            if not self.tab_count % 2:
+                self.tab_count -= 1
         else:
             self.tab_count = 3
 
