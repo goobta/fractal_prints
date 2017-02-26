@@ -33,7 +33,7 @@ class Cut:
         self.__generate_tabs()
 
     def __generate_tabs(self):
-        if(math.floor(self.length) >= 3):
+        if math.floor(self.length) >= 3:
             self.tab_count = math.floor(self.length)
         else:
             self.tab_count = 3
@@ -41,4 +41,35 @@ class Cut:
         self.tab_width = self.length / self.tab_count
 
     def generate_cut(self):
+        if self.type == "a":
+            return self.__gen_cut_a()
+        elif self.type == "b":
+            return self.__gen_cut_b()
+        elif self.type == "c":
+            return self.__gen_cut_c()
+        elif self.type == "a90":
+            return self.__gen_cut_a90()
+        elif self.type == "b90":
+            return self.__gen_cut_b90()
+        elif self.type == "c90":
+            return self.__gen_cut_c90()
+        else:
+            return None
+
+    def __gen_cut_a(self):
+        pass
+
+    def __gen_cut_b(self):
+        pass
+
+    def __gen_cut_c(self):
+        pass
+
+    def __gen_cut_a90(self):
+        pass
+
+    def __gen_cut_b90(self):
+        pass
+
+    def __gen_cut_c90(self):
         pass
