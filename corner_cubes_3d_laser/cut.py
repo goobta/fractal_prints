@@ -25,10 +25,11 @@ import math
 
 
 class Cut:
-    def __init__(self, side_length, iteration, cut_type):
+    def __init__(self, side_length, iteration, cut_type, material_thickness):
         self.length = side_length
         self.iteration = iteration
         self.type = cut_type
+        self.thickness = material_thickness
 
         self.__generate_tabs()
 
