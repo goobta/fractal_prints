@@ -22,13 +22,37 @@
 # SOFTWARE.
 
 import svgwrite
+import glob
+import os
 from svgwrite import inch
 from cut import Cut
 from config import Config
 
 class Fractal:
     def __init__(self):
-        pass
+        self.shape_queue = []
 
     def generate_plans(self):
-        pass
+        self.populate_cut_queue()
+
+        while len(self.shape_queue) != 0:
+            pass
+
+    def populate_cut_queue(self):
+        for current_iteration in xrange(Config.iterations):
+            self.shape_queue.append(Cut(current_iteration, "a"))
+            self.shape_queue.append(Cut(current_iteration, "b"))
+            self.shape_queue.append(Cut(current_iteration, "c"))
+
+            if current_iteration == 0:
+                self.shape_queue.append(Cut(current_iteration, "a"))
+                self.shape_queue.append(Cut(current_iteration, "b"))
+                self.shape_queue.append(Cut(current_iteration, "c"))
+
+            else:
+                self.shape_queue.append(Cut(current_iteration, "a90"))
+                self.shape_queue.append(Cut(current_iteration, "b90"))
+                self.shape_queue.append(Cut(current_iteration, "c90"))
+
+    def create_canvas(self):
+        return svgwrite.Drawing(filename="plan_" + str(len(glob.glob(os.getcwd() + "/plans/*"))) + ".svg")

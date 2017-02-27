@@ -29,11 +29,11 @@ from config import Config
 
 
 class Cut:
-    def __init__(self, side_length, iteration, cut_type, shapeID):
-        self.length = side_length
+    def __init__(self, iteration, cut_type):
         self.iteration = iteration
+        self.length = Config.initial_cube_size * Config.iteration_multiplier ** iteration
         self.type = cut_type
-        self.id = shapeID
+        self.id = numpy.random.randint(0, 999999999)
 
         self.__generate_tabs()
 
