@@ -240,6 +240,8 @@ class Cut:
                 shape.add(self.__gen_line(last_pos, numpy.array([Config.material_thickness, 0])))
                 last_pos += numpy.array([-Config.material_thickness, 0])
 
+        return shape
+
     def __gen_cut_c(self, starting_pos):
         pass
 
