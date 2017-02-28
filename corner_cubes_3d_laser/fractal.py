@@ -25,7 +25,6 @@ import svgwrite
 import numpy
 import glob
 import os
-from svgwrite import inch
 from cut import Cut
 from config import Config
 
@@ -36,13 +35,12 @@ class Fractal:
 
     def generate_plans(self):
         self.populate_cut_queue()
-        self.shape_queue = self.shape_queue.sort(key=lambda x: x.length, reverse=True)
 
         while len(self.shape_queue) != 0:
             drawing = self.create_canvas()
 
             drawing.add(drawing.rect(insert=(0, 0),
-                                     size=(str(Config.cutting_bed_width) + "in", str(Config.cutting_bed_height) + "in"),
+                                     size=(str(Config.cutting_bed_width), str(Config.cutting_bed_height)),
                                      stroke_width=Config.stroke_thickness,
                                      stroke=Config.bounding_box_color,
                                      fill="none"))
@@ -50,27 +48,32 @@ class Fractal:
             self.bounds_array = []
             self.gen_shape_positions(drawing, numpy.array([0, 0]))
 
-    def populate_cut_queue(self):
-        for current_iteration in xrange(Config.iterations):
-            self.shape_queue.append(Cut(current_iteration, "a"))
-            self.shape_queue.append(Cut(current_iteration, "b"))
-            self.shape_queue.append(Cut(current_iteration, "c"))
+            drawing.save()
 
-            if current_iteration == 0:
+    def populate_cut_queue(self):
+        for current_iteration in xrange(1, Config.iterations + 1):
+            for i in xrange(7 ** (current_iteration - 1)):
                 self.shape_queue.append(Cut(current_iteration, "a"))
                 self.shape_queue.append(Cut(current_iteration, "b"))
                 self.shape_queue.append(Cut(current_iteration, "c"))
 
-            else:
-                self.shape_queue.append(Cut(current_iteration, "a90"))
-                self.shape_queue.append(Cut(current_iteration, "b90"))
-                self.shape_queue.append(Cut(current_iteration, "c90"))
+                if current_iteration == 0:
+                    self.shape_queue.append(Cut(current_iteration, "a"))
+                    self.shape_queue.append(Cut(current_iteration, "b"))
+                    self.shape_queue.append(Cut(current_iteration, "c"))
+
+                else:
+                    self.shape_queue.append(Cut(current_iteration, "a90"))
+                    self.shape_queue.append(Cut(current_iteration, "b90"))
+                    self.shape_queue.append(Cut(current_iteration, "c90"))
 
     def create_canvas(self):
-        return svgwrite.Drawing(filename="plan_" + str(len(glob.glob(os.getcwd() + "/plans/*"))) + ".svg")
+        return svgwrite.Drawing(filename="plans/plan_" + str(len(glob.glob(os.getcwd() + "/plans/*"))) + ".svg")
 
     def gen_shape_positions(self, drawing, starting_pos):
-        self.bounds_array = self.bounds_array.sort(key=lambda x: x[0])
+        self.bounds_array = sorted(self.bounds_array, key=lambda x: [0])
+
+        print starting_pos
 
         horizontal_distance = Config.cutting_bed_width - starting_pos[0]
         vertical_distance = Config.cutting_bed_height - starting_pos[1]
@@ -78,12 +81,12 @@ class Fractal:
         for i in xrange(len(self.bounds_array)):
             horizontal_delta = self.bounds_array[i][0] - starting_pos[0]
 
-            if 0 <= horizontal_delta < horizontal_distance:
+            if 0 < horizontal_delta < horizontal_distance:
                 for j in xrange(i, len(self.bounds_array)):
                     if self.bounds_array[j][0] == self.bounds_array[i][0]:
                         vertical_delta = self.bounds_array[j][1] - starting_pos[1]
 
-                        if 0 <= vertical_delta < vertical_distance:
+                        if 0 < vertical_delta < vertical_distance:
                             vertical_distance = vertical_delta
                             break
 
@@ -95,9 +98,11 @@ class Fractal:
         else:
             bounding_distance = vertical_distance
 
+        print "HD: " + str(horizontal_distance) + " VD: " + str(vertical_distance) + " BD: " + str(bounding_distance)
+
         for i in xrange(len(self.shape_queue)):
             if self.shape_queue[i].length <= bounding_distance:
-                drawing.add(self.shape_queue[i].generate_bounding_box())
+                drawing.add(self.shape_queue[i].generate_bounding_box(drawing, starting_pos))
 
                 self.bounds_array.append(starting_pos)
                 self.bounds_array.append(starting_pos + numpy.array([0, self.shape_queue[i].length]))
@@ -113,3 +118,6 @@ class Fractal:
                 self.gen_shape_positions(drawing, bottom_box_pos)
 
                 return
+
+fractal = Fractal()
+fractal.generate_plans()

@@ -26,10 +26,10 @@ class Config:
     material_thickness = 0.8
     initial_cube_size = 7
     iteration_multiplier = 0.5
-    iterations = 3
+    iterations = 2
     cutting_bed_width = 18
     cutting_bed_height = 10
 
     bounding_box_color = "yellow"
     cube_color = "black"
-    stroke_thickness = 0.5
+    stroke_thickness = .02

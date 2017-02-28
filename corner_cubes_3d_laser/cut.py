@@ -24,14 +24,13 @@
 import math
 import numpy
 import svgwrite
-from svgwrite import inch
 from config import Config
 
 
 class Cut:
     def __init__(self, iteration, cut_type):
         self.iteration = iteration
-        self.length = Config.initial_cube_size * Config.iteration_multiplier ** iteration
+        self.length = Config.initial_cube_size * Config.iteration_multiplier ** (iteration - 1)
         self.type = cut_type
         self.id = numpy.random.randint(0, 999999999)
 
@@ -40,7 +39,7 @@ class Cut:
     def generate_bounding_box(self, drawing, starting_pos):
         return drawing.rect(
             insert=tuple(starting_pos),
-            size=(str(self.length) + "in", str(self.length) + "in"),
+            size=(str(self.length), str(self.length)),
             stroke_width=Config.stroke_thickness,
             stroke=Config.cube_color,
             fill="none"
