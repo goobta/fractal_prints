@@ -37,16 +37,14 @@ class Cut:
 
         self.__generate_tabs()
 
-    def __generate_tabs(self):
-        if math.floor(self.length) >= 3:
-            self.tab_count = math.floor(self.length)
-
-            if self.tab_count % 2 != 1:
-                self.tab_count -= 1
-        else:
-            self.tab_count = 3
-
-        self.tab_width = self.length / self.tab_count
+    def generate_bounding_box(self, drawing, starting_pos):
+        return drawing.rect(
+            insert=tuple(starting_pos),
+            size=(str(self.length) + "in", str(self.length) + "in"),
+            stroke_width=Config.stroke_thickness,
+            stroke=Config.cube_color,
+            fill="none"
+        )
 
     def generate_cut(self, drawing, starting_pos):
         self.drawing = drawing
@@ -65,6 +63,17 @@ class Cut:
             return self.__gen_cut_c90(starting_pos)
         else:
             return None
+
+    def __generate_tabs(self):
+        if math.floor(self.length) >= 3:
+            self.tab_count = math.floor(self.length)
+
+            if self.tab_count % 2 != 1:
+                self.tab_count -= 1
+        else:
+            self.tab_count = 3
+
+        self.tab_width = self.length / self.tab_count
 
     def __gen_cut_a(self, starting_pos):
         shape = self.drawing.g(id=str(self.id))
