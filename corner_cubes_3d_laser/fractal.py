@@ -73,8 +73,6 @@ class Fractal:
     def gen_shape_positions(self, drawing, starting_pos):
         self.bounds_array = sorted(self.bounds_array, key=lambda x: [0])
 
-        print starting_pos
-
         horizontal_distance = Config.cutting_bed_width - starting_pos[0]
         vertical_distance = Config.cutting_bed_height - starting_pos[1]
 
