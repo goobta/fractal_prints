@@ -35,8 +35,20 @@ class Fractal:
     def generate_plans(self):
         self.populate_cut_queue()
 
+        drawing_filled = False
+
         while len(self.shape_queue) != 0:
-            pass
+            drawing = self.create_canvas()
+
+            drawing.add(drawing.rect(insert=(0, 0),
+                                     size=(str(Config.cutting_bed_width) + "in", str(Config.cutting_bed_height) + "in"),
+                                     stroke_width=Config.stroke_thickness,
+                                     stroke=Config.bounding_box_color,
+                                     fill="none"))
+
+            while not drawing_filled:
+                pass
+
 
     def populate_cut_queue(self):
         for current_iteration in xrange(Config.iterations):

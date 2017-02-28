@@ -25,7 +25,7 @@ SOFTWARE.
 
 init_cube_size = 50;
 iteration_factor = 0.45;
-iterations = 3;
+iterations = 4;
 
 echo("---- Gupta 2017 ----");
 echo(version());
