@@ -72,6 +72,7 @@ class Cut:
         else:
             self.tab_count = 3
 
+        self.tab_count = int(self.tab_count)
         self.tab_width = self.length / self.tab_count
 
     def __gen_cut_a(self, starting_pos):
@@ -357,13 +358,13 @@ class Cut:
         return shape
 
     def __gen_cut_a90(self, starting_pos):
-        pass
+        self.generate_bounding_box(self.drawing, starting_pos)
 
     def __gen_cut_b90(self, starting_pos):
-        pass
+        self.generate_bounding_box(self.drawing, starting_pos)
 
     def __gen_cut_c90(self, starting_pos):
-        pass
+        self.generate_bounding_box(self.drawing, starting_pos)
 
     def __gen_line(self, start_array, translation_array):
         return self.drawing.line(tuple(start_array), tuple(start_array + translation_array),

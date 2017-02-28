@@ -98,8 +98,6 @@ class Fractal:
         else:
             bounding_distance = vertical_distance
 
-        print "HD: " + str(horizontal_distance) + " VD: " + str(vertical_distance) + " BD: " + str(bounding_distance)
-
         for i in xrange(len(self.shape_queue)):
             if self.shape_queue[i].length <= bounding_distance:
                 drawing.add(self.shape_queue[i].generate_bounding_box(drawing, starting_pos))
