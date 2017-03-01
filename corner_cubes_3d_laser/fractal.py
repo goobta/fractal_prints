@@ -105,8 +105,6 @@ class Fractal:
 
         for i in xrange(len(self.shape_queue)):
             if self.shape_queue[i].length <= bounding_distance:
-                print "ID: " + str(len(self.shape_queue)) + " HD: " + str(horizontal_distance) + " VD: " + str(vertical_distance) + " BD: " + str(bounding_distance)
-
                 drawing.add(self.shape_queue[i].generate_cut(drawing, starting_pos))
 
                 self.bounds_array.append([starting_pos, starting_pos + numpy.array([self.shape_queue[i].length, self.shape_queue[i].length])])

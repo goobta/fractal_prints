@@ -27,8 +27,8 @@ class Config:
     initial_cube_size = 6
     iteration_multiplier = 0.5
     iterations = 3
-    cutting_bed_width = 18
-    cutting_bed_height = 10
+    cutting_bed_width = 19
+    cutting_bed_height = 11
 
     bounding_box_color = "yellow"
     cube_color = "black"
