@@ -28,6 +28,7 @@ import os
 from cut import Cut
 from config import Config
 
+
 class Fractal:
     def __init__(self):
         self.shape_queue = []
@@ -37,7 +38,7 @@ class Fractal:
         self.populate_cut_queue()
 
         while len(self.shape_queue) != 0:
-            drawing = self.create_canvas()
+            drawing, name = self.create_canvas()
 
             drawing.add(drawing.rect(insert=(0, 0),
                                      size=(str(Config.cutting_bed_width), str(Config.cutting_bed_height)),
@@ -46,14 +47,15 @@ class Fractal:
                                      fill="none"))
 
             self.bounds_array = []
-            self.gen_shape_positions(drawing, numpy.array([0, 0]))
+            self.gen_shape_positions(drawing, numpy.array([0.0, 0.0]))
 
             drawing.save()
+            print name + " - completed"
 
     def populate_cut_queue(self):
         for current_iteration in xrange(1, Config.iterations + 1):
             for i in xrange(7 ** (current_iteration - 1)):
-                self.shape_queue.append(Cut(current_iteration, "a"))
+                 self.shape_queue.append(Cut(current_iteration, "a"))
                 # self.shape_queue.append(Cut(current_iteration, "b"))
                 # self.shape_queue.append(Cut(current_iteration, "c"))
                 #
@@ -68,28 +70,33 @@ class Fractal:
                 #     self.shape_queue.append(Cut(current_iteration, "c90"))
 
     def create_canvas(self):
-        return svgwrite.Drawing(filename="plans/plan_" + str(len(glob.glob(os.getcwd() + "/plans/*"))) + ".svg")
+        filename = "plans/plan_" + str(len(glob.glob(os.getcwd() + "/plans/*"))) + ".svg"
+        return svgwrite.Drawing(filename=filename), filename
 
     def gen_shape_positions(self, drawing, starting_pos):
-        self.bounds_array = sorted(self.bounds_array, key=lambda x: [0])
-
         horizontal_distance = Config.cutting_bed_width - starting_pos[0]
         vertical_distance = Config.cutting_bed_height - starting_pos[1]
 
         for i in xrange(len(self.bounds_array)):
-            horizontal_delta = self.bounds_array[i][0] - starting_pos[0]
+            horizontal_delta = self.bounds_array[i][0][0] - starting_pos[0]
 
-            if 0 < horizontal_delta < horizontal_distance:
-                for j in xrange(i, len(self.bounds_array)):
-                    if self.bounds_array[j][0] == self.bounds_array[i][0]:
-                        vertical_delta = self.bounds_array[j][1] - starting_pos[1]
+            if 0 <= horizontal_delta < horizontal_distance:
+                if self.bounds_array[i][0][1] < starting_pos[1] < self.bounds_array[i][1][1]:
+                    horizontal_distance = horizontal_delta
+                    break
+                elif self.bounds_array[i][0][1] == starting_pos[1] and self.bounds_array[i][0][0] == starting_pos[0]:
+                    return
 
-                        if 0 < vertical_delta < vertical_distance:
-                            vertical_distance = vertical_delta
-                            break
+        for i in xrange(len(self.bounds_array)):
+            vertical_delta = self.bounds_array[i][0][1] - starting_pos[1]
 
-                horizontal_distance = horizontal_delta
-                break
+            if 0 <= vertical_delta < vertical_distance:
+                if self.bounds_array[i][0][0] < starting_pos[0] < self.bounds_array[i][1][0]:
+                    if vertical_delta == 0:
+                        return
+                    else:
+                        vertical_distance = vertical_delta
+                        break
 
         if horizontal_distance < vertical_distance:
             bounding_distance = horizontal_distance
@@ -97,13 +104,10 @@ class Fractal:
             bounding_distance = vertical_distance
 
         for i in xrange(len(self.shape_queue)):
-            if self.shape_queue[i].length <= bounding_distance:
+            if self.shape_queue[i].length < bounding_distance:
                 drawing.add(self.shape_queue[i].generate_cut(drawing, starting_pos))
 
-                self.bounds_array.append(starting_pos)
-                self.bounds_array.append(starting_pos + numpy.array([0, self.shape_queue[i].length]))
-                self.bounds_array.append(starting_pos + numpy.array([self.shape_queue[i].length, 0]))
-                self.bounds_array.append(starting_pos + numpy.array([self.shape_queue[i].length, self.shape_queue[i].length]))
+                self.bounds_array.append([starting_pos, starting_pos + numpy.array([self.shape_queue[i].length, self.shape_queue[i].length])])
 
                 right_box_pos = starting_pos + numpy.array([self.shape_queue[i].length, 0])
                 bottom_box_pos = starting_pos + numpy.array([0, self.shape_queue[i].length])
