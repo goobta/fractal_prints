@@ -54,18 +54,18 @@ class Fractal:
         for current_iteration in xrange(1, Config.iterations + 1):
             for i in xrange(7 ** (current_iteration - 1)):
                 self.shape_queue.append(Cut(current_iteration, "a"))
-                self.shape_queue.append(Cut(current_iteration, "b"))
-                self.shape_queue.append(Cut(current_iteration, "c"))
-
-                if current_iteration == 0:
-                    self.shape_queue.append(Cut(current_iteration, "a"))
-                    self.shape_queue.append(Cut(current_iteration, "b"))
-                    self.shape_queue.append(Cut(current_iteration, "c"))
-
-                else:
-                    self.shape_queue.append(Cut(current_iteration, "a90"))
-                    self.shape_queue.append(Cut(current_iteration, "b90"))
-                    self.shape_queue.append(Cut(current_iteration, "c90"))
+                # self.shape_queue.append(Cut(current_iteration, "b"))
+                # self.shape_queue.append(Cut(current_iteration, "c"))
+                #
+                # if current_iteration == 0:
+                #     self.shape_queue.append(Cut(current_iteration, "a"))
+                #     self.shape_queue.append(Cut(current_iteration, "b"))
+                #     self.shape_queue.append(Cut(current_iteration, "c"))
+                #
+                # else:
+                #     self.shape_queue.append(Cut(current_iteration, "a90"))
+                #     self.shape_queue.append(Cut(current_iteration, "b90"))
+                #     self.shape_queue.append(Cut(current_iteration, "c90"))
 
     def create_canvas(self):
         return svgwrite.Drawing(filename="plans/plan_" + str(len(glob.glob(os.getcwd() + "/plans/*"))) + ".svg")
@@ -98,7 +98,7 @@ class Fractal:
 
         for i in xrange(len(self.shape_queue)):
             if self.shape_queue[i].length <= bounding_distance:
-                drawing.add(self.shape_queue[i].generate_bounding_box(drawing, starting_pos))
+                drawing.add(self.shape_queue[i].generate_cut(drawing, starting_pos))
 
                 self.bounds_array.append(starting_pos)
                 self.bounds_array.append(starting_pos + numpy.array([0, self.shape_queue[i].length]))
