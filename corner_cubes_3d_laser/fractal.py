@@ -59,7 +59,7 @@ class Fractal:
                 # self.shape_queue.append(Cut(current_iteration, "b"))
                 # self.shape_queue.append(Cut(current_iteration, "c"))
 
-                self.shape_queue.append(Cut(current_iteration, "b90"))
+                self.shape_queue.append(Cut(current_iteration, "c90"))
                 #
                 # if current_iteration == 0:
                 #     self.shape_queue.append(Cut(current_iteration, "a"))
