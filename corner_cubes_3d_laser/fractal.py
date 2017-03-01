@@ -83,7 +83,7 @@ class Fractal:
             if 0 <= horizontal_delta < horizontal_distance:
                 if self.bounds_array[i][0][1] < starting_pos[1] < self.bounds_array[i][1][1]:
                     horizontal_distance = horizontal_delta
-                    break
+
                 elif self.bounds_array[i][0][1] == starting_pos[1] and self.bounds_array[i][0][0] == starting_pos[0]:
                     return
 
@@ -104,7 +104,9 @@ class Fractal:
             bounding_distance = vertical_distance
 
         for i in xrange(len(self.shape_queue)):
-            if self.shape_queue[i].length < bounding_distance:
+            if self.shape_queue[i].length <= bounding_distance:
+                print "ID: " + str(len(self.shape_queue)) + " HD: " + str(horizontal_distance) + " VD: " + str(vertical_distance) + " BD: " + str(bounding_distance)
+
                 drawing.add(self.shape_queue[i].generate_cut(drawing, starting_pos))
 
                 self.bounds_array.append([starting_pos, starting_pos + numpy.array([self.shape_queue[i].length, self.shape_queue[i].length])])

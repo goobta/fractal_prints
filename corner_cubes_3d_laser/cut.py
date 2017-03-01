@@ -36,14 +36,23 @@ class Cut:
 
         self.__generate_tabs()
 
-    def generate_bounding_box(self, drawing, starting_pos):
-        return drawing.rect(
+    def generate_bounding_box(self, drawing, starting_pos, shape_id):
+        dwg = drawing.g(id=shape_id, style="font-size: 0.5")
+
+        dwg.add(drawing.rect(
             insert=tuple(starting_pos),
             size=(str(self.length), str(self.length)),
             stroke_width=Config.stroke_thickness,
             stroke=Config.cube_color,
             fill="none"
-        )
+        ))
+
+        dwg.add(drawing.text(
+            str(shape_id),
+            insert=tuple(starting_pos),
+        ))
+
+        return dwg
 
     def generate_cut(self, drawing, starting_pos):
         self.drawing = drawing
