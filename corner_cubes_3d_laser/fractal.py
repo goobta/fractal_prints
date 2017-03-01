@@ -57,7 +57,9 @@ class Fractal:
             for i in xrange(7 ** (current_iteration - 1)):
                 # self.shape_queue.append(Cut(current_iteration, "a"))
                 # self.shape_queue.append(Cut(current_iteration, "b"))
-                self.shape_queue.append(Cut(current_iteration, "c"))
+                # self.shape_queue.append(Cut(current_iteration, "c"))
+
+                self.shape_queue.append(Cut(current_iteration, "a90"))
                 #
                 # if current_iteration == 0:
                 #     self.shape_queue.append(Cut(current_iteration, "a"))
