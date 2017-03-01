@@ -55,9 +55,9 @@ class Fractal:
     def populate_cut_queue(self):
         for current_iteration in xrange(1, Config.iterations + 1):
             for i in xrange(7 ** (current_iteration - 1)):
-                 self.shape_queue.append(Cut(current_iteration, "a"))
+                # self.shape_queue.append(Cut(current_iteration, "a"))
                 # self.shape_queue.append(Cut(current_iteration, "b"))
-                # self.shape_queue.append(Cut(current_iteration, "c"))
+                self.shape_queue.append(Cut(current_iteration, "c"))
                 #
                 # if current_iteration == 0:
                 #     self.shape_queue.append(Cut(current_iteration, "a"))

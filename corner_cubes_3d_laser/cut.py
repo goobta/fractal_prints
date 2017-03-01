@@ -78,8 +78,6 @@ class Cut:
     def __gen_cut_a(self, starting_pos):
         shape = self.drawing.g(id=str(self.id))
 
-        print self.tab_width
-
         # Top Edge
         last_pos = starting_pos + numpy.array([self.tab_width, Config.material_thickness])
         for i in xrange(self.tab_count - 2):
@@ -186,7 +184,8 @@ class Cut:
         shape = self.drawing.g(id=str(self.id))
 
         # Top Edge
-        last_pos = starting_pos
+        last_pos = list(starting_pos)
+
         for i in xrange(self.tab_count):
             if i % 2 == 0:
                 shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width, 0])))
@@ -203,7 +202,8 @@ class Cut:
                 last_pos += numpy.array([0, -Config.material_thickness])
 
         # Left Edge
-        last_pos = starting_pos
+        last_pos = list(starting_pos)
+
         for i in xrange(self.tab_count):
             if i % 2 == 0:
                 shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
@@ -219,7 +219,7 @@ class Cut:
                 last_pos += numpy.array([-Config.material_thickness, 0])
 
         # Bottom Edge
-        last_pos = starting_pos + numpy.array([0, self.length])
+        last_pos = list(starting_pos) + numpy.array([0, self.length])
         for i in xrange(self.tab_count):
             if i % 2 == 0:
                 shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width, 0])))
@@ -227,16 +227,16 @@ class Cut:
 
             else:
                 shape.add(self.__gen_line(last_pos, numpy.array([0, -Config.material_thickness])))
-                last_pos += numpy.array([0, Config.material_thickness])
+                last_pos += numpy.array([0, -Config.material_thickness])
 
                 shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width, 0])))
                 last_pos += numpy.array([self.tab_width, 0])
 
                 shape.add(self.__gen_line(last_pos, numpy.array([0, Config.material_thickness])))
-                last_pos += numpy.array([0, -Config.material_thickness])
+                last_pos += numpy.array([0, Config.material_thickness])
 
         # Right Edge
-        last_pos = starting_pos + numpy.array([self.length, 0])
+        last_pos = list(starting_pos) + numpy.array([self.length, 0])
         for i in xrange(self.tab_count):
             if i % 2 == 0:
                 shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
@@ -244,13 +244,13 @@ class Cut:
 
             else:
                 shape.add(self.__gen_line(last_pos, numpy.array([-Config.material_thickness, 0])))
-                last_pos += numpy.array([Config.material_thickness, 0])
+                last_pos += numpy.array([-Config.material_thickness, 0])
 
                 shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
                 last_pos += numpy.array([0, self.tab_width])
 
                 shape.add(self.__gen_line(last_pos, numpy.array([Config.material_thickness, 0])))
-                last_pos += numpy.array([-Config.material_thickness, 0])
+                last_pos += numpy.array([Config.material_thickness, 0])
 
         return shape
 
@@ -258,7 +258,7 @@ class Cut:
         shape = self.drawing.g(id=str(self.id))
 
         # Top Edge
-        last_pos = starting_pos + numpy.array([self.tab_width, 0])
+        last_pos = list(starting_pos) + numpy.array([self.tab_width, 0])
         for i in xrange(self.tab_count - 2):
             if i % 2 == 0:
                 shape.add(self.__gen_line(last_pos, numpy.array([0, Config.material_thickness])))
@@ -275,24 +275,24 @@ class Cut:
                 last_pos += numpy.array([self.tab_width, 0])
 
         # Bottom Edge
-        last_pos = starting_pos + numpy.array([self.tab_width, self.length])
+        last_pos = list(starting_pos) + numpy.array([self.tab_width, self.length])
         for i in xrange(self.tab_count - 2):
             if i % 2 == 0:
                 shape.add(self.__gen_line(last_pos, numpy.array([0, -Config.material_thickness])))
-                last_pos += numpy.array([0, Config.material_thickness])
+                last_pos += numpy.array([0, -Config.material_thickness])
 
                 shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width, 0])))
                 last_pos += numpy.array([self.tab_width, 0])
 
                 shape.add(self.__gen_line(last_pos, numpy.array([0, Config.material_thickness])))
-                last_pos += numpy.array([0, -Config.material_thickness])
+                last_pos += numpy.array([0, Config.material_thickness])
 
             else:
                 shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width, 0])))
                 last_pos += numpy.array([self.tab_width, 0])
 
         # Left Edge
-        last_pos = starting_pos + numpy.array([Config.material_thickness, self.tab_width])
+        last_pos = list(starting_pos) + numpy.array([Config.material_thickness, self.tab_width])
 
         for i in xrange(self.tab_count - 2):
             if i % 2 == 0:
@@ -309,24 +309,24 @@ class Cut:
                 last_pos += numpy.array([0, self.tab_width])
 
         # Right Edge
-        last_pos = starting_pos + numpy.array([self.length - Config.material_thickness, self.length])
+        last_pos = list(starting_pos) + numpy.array([self.length - Config.material_thickness, self.tab_width])
 
         for i in xrange(self.tab_count - 2):
             if i % 2 == 0:
                 shape.add(self.__gen_line(last_pos, numpy.array([Config.material_thickness, 0])))
-                last_pos += numpy.array([-Config.material_thickness, 0])
+                last_pos += numpy.array([Config.material_thickness, 0])
 
                 shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
                 last_pos += numpy.array([0, self.tab_width])
 
                 shape.add(self.__gen_line(last_pos, numpy.array([-Config.material_thickness, 0])))
-                last_pos += numpy.array([Config.material_thickness, 0])
+                last_pos += numpy.array([-Config.material_thickness, 0])
             else:
                 shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
                 last_pos += numpy.array([0, self.tab_width])
 
         # Top left corner
-        last_pos = starting_pos + numpy.array([Config.material_thickness, self.tab_width])
+        last_pos = list(starting_pos) + numpy.array([Config.material_thickness, self.tab_width])
 
         shape.add(self.__gen_line(last_pos, numpy.array([0, -self.tab_width])))
         last_pos += numpy.array([0, -self.tab_width])
@@ -334,15 +334,15 @@ class Cut:
         shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width - Config.material_thickness, 0])))
 
         # Top right corner
-        last_pos = starting_pos + numpy.array([self.length - self.tab_width, 0])
+        last_pos = list(starting_pos) + numpy.array([self.length - self.tab_width, 0])
 
-        shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width - Config.material_thickness])))
-        last_pos += numpy.array([self.tab_width - Config.material_thickness])
+        shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width - Config.material_thickness, 0])))
+        last_pos += numpy.array([self.tab_width - Config.material_thickness, 0])
 
         shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
 
         # Bottom left corner
-        last_pos = starting_pos + numpy.array([Config.material_thickness, self.length])
+        last_pos = list(starting_pos) + numpy.array([Config.material_thickness, self.length - self.tab_width])
 
         shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
         last_pos += numpy.array([0, self.tab_width])
@@ -350,7 +350,7 @@ class Cut:
         shape.add(self.__gen_line(last_pos, numpy.array([self.tab_width - Config.material_thickness, 0])))
 
         # Bottom right corner
-        last_pos = starting_pos + numpy.array([self.length - Config.material_thickness, self.length - self.tab_width])
+        last_pos = list(starting_pos) + numpy.array([self.length - Config.material_thickness, self.length - self.tab_width])
 
         shape.add(self.__gen_line(last_pos, numpy.array([0, self.tab_width])))
         last_pos += numpy.array([0, self.tab_width])
