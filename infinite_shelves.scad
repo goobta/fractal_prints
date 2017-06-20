@@ -3,7 +3,7 @@
 // user set variables
 initial_side_length = 100;
 initial_side_height = 30;
-padding_ratio = .05;
+padding_ratio = .07;
 
 knob_ratio = .2;
 
@@ -28,16 +28,24 @@ module shelf(length, depth, height) {
 }
 
 module pattern(current_iteration, starting_pos, length, depth, height) {
-    padding = length * padding_ratio;
+    len_padding = length * padding_ratio;
+    height_padding = height * padding_ratio;
 
-    length_new = length / 2 - padding;
-    height_new = (height - padding * 3) / 2;
+    length_new = length / 2 - len_padding;
+    height_new = (height - 3 * height_padding) / 2;
+
+    echo(height);
+    echo(height_new);
 
     if(current_iteration % 2 == 0) {
         echo(starting_pos + [0, depth / 2, 0]);
 
-        translate(starting_pos + [0, (length_new * top_opening_ratio) / 2, 0]) {
+        translate(starting_pos + [0, (length_new * top_opening_ratio) / 2, (height_new + 3/2 * height_padding) / 2]) {
             shelf(length_new, length_new * top_opening_ratio, height_new);
+        }
+
+        translate(starting_pos + [0, (length_new * bottom_opening_ratio) / 2, -(height_new + 3/2 * height_padding) / 2]) {
+            shelf(length_new, length_new * bottom_opening_ratio, height_new);
         }
     }
     else if(current_iteration % 2 == 1) {
