@@ -1,16 +1,16 @@
 // www.github.com/agupta231
 
 // user set variables
-initial_side_length = 100;
-initial_side_height = 100;
+initial_side_length = 75;
+initial_side_height = 50;
 padding_ratio = .07;
 
 knob_ratio = .2;
 
 max_iterations = 3;
 
-top_opening_ratio = .3;
-bottom_opening_ratio = .8;
+top_opening_ratio = .4;
+bottom_opening_ratio = .7;
 
 echo(version());
 
@@ -72,6 +72,8 @@ module pattern(current_iteration, starting_pos, length, height) {
     }
 }
 
-shelf(initial_side_length, initial_side_length * bottom_opening_ratio, initial_side_height);
+union() {
+    shelf(initial_side_length, initial_side_length * bottom_opening_ratio, initial_side_height);
 
-pattern(1, [initial_side_length / 2, 0, 0], initial_side_length * bottom_opening_ratio, initial_side_height);
+    pattern(1, [initial_side_length / 2, 0, 0], initial_side_length * bottom_opening_ratio, initial_side_height);
+}
